@@ -74,16 +74,14 @@ La aplicación abrirá en:
 
  Capturas de Pantalla
 
+### 🏠 Pantalla principal
+![Captura 1](public/screenshots/captura1.png)
 
+### 📄 Formulario de solicitud
+![Captura 2](public/screenshots/captura2.png)
 
-### Pantalla Principal
-![Pantalla Principal](./public/screenshots/captura1.png)
-
-### Lista de Créditos
-![Lista Créditos](./public/screenshots/captura2.png)
-
-### Navegación con React Router
-![Navegación](./public/screenshots/captura3.png)
+### 📊 Resultado de simulación
+![Captura 3](public/screenshots/captura3.png)
 
 
 
