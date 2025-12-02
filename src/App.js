@@ -20,3 +20,4 @@ export default function App() {
     </Router>
   );
 }
+// Componente principal que organiza las rutas de la app
