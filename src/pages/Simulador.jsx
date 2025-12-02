@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { creditsData } from "../data/creditsData";
+import "./Simulador.css";   // ⬅️ Import del estilo
 
 export default function Simulador() {
   const [search, setSearch] = useState("");
@@ -24,46 +25,37 @@ export default function Simulador() {
   }
 
   return (
-    <div>
+    <div className="simulador-container">
       <h1>Simulador de Créditos</h1>
 
-      {/* Búsqueda */}
-      <input
-        type="text"
-        placeholder="Buscar crédito..."
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
-      />
+      {/* Filtros */}
+      <div className="filtros-container">
+        <input
+          type="text"
+          placeholder="Buscar crédito..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
 
-      {/* Filtro por monto */}
-      <select onChange={(e) => setFiltroMonto(e.target.value)}>
-        <option value="all">Todos los montos</option>
-        <option value="10000000">Más de 10 millones</option>
-        <option value="50000000">Más de 50 millones</option>
-      </select>
+        <select onChange={(e) => setFiltroMonto(e.target.value)}>
+          <option value="all">Todos los montos</option>
+          <option value="10000000">Más de 10 millones</option>
+          <option value="50000000">Más de 50 millones</option>
+        </select>
 
-      {/* Orden por tasa */}
-      <select onChange={(e) => setFiltroTasa(e.target.value)}>
-        <option value="none">Sin ordenar</option>
-        <option value="asc">Tasa: menor a mayor</option>
-      </select>
+        <select onChange={(e) => setFiltroTasa(e.target.value)}>
+          <option value="none">Sin ordenar</option>
+          <option value="asc">Tasa: menor a mayor</option>
+        </select>
+      </div>
 
       {/* Resultados */}
-      <div style={{ display: "flex", flexWrap: "wrap" }}>
+      <div className="tarjetas-container">
         {resultados.length === 0 ? (
           <p>No hay créditos disponibles</p>
         ) : (
           resultados.map((c) => (
-            <div
-              key={c.id}
-              style={{
-                border: "1px solid #aaa",
-                padding: "1rem",
-                margin: "1rem",
-                borderRadius: "8px",
-                width: "250px",
-              }}
-            >
+            <div className="card-simulador" key={c.id}>
               <h3>{c.nombre}</h3>
               <p>Tasa: {c.tasa}%</p>
               <p>Montos: ${c.montoMin} - ${c.montoMax}</p>
