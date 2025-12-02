@@ -1,9 +1,10 @@
 import { Link } from "react-router-dom";
 import "./Navbar.css"; // Opcional (para estilos)
 
+// Navbar principal con enlaces de navegación
 export default function Navbar() {
   return (
-    <nav className="navbar">
+    <nav className="navbar" aria-label="Navegación principal">
       <h2>CreditSmart</h2>
 
       <ul>
@@ -14,3 +15,4 @@ export default function Navbar() {
     </nav>
   );
 }
+
