@@ -1,5 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-
+import SolicitarCredito from "./pages/SolicitarCredito";
 import Navbar from "./components/Navbar";
 import Inicio from "./pages/Inicio";
 import Simulador from "./pages/Simulador";
