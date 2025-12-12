@@ -1,4 +1,5 @@
-import SolicitarCredito from "./pages/SolicitarCredito";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+
 import Navbar from "./components/Navbar";
 import Inicio from "./pages/Inicio";
 import Simulador from "./pages/Simulador";
@@ -19,4 +20,3 @@ export default function App() {
     </Router>
   );
 }
-// Componente principal que organiza las rutas de la app
