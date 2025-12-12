@@ -26,11 +26,24 @@ export default function SolicitarCredito() {
   // -----------------------------
   const calcularCuota = (monto, plazo) => {
     if (!monto || !plazo) return null;
-
     const tasa = 0.025;
-    const cuotaMensual = monto / plazo + (monto * tasa) / plazo;
-    return Math.round(cuotaMensual);
+    return Math.round(monto / plazo + (monto * tasa) / plazo);
   };
+
+  // -----------------------------
+  // Detectar pérdida de internet
+  // -----------------------------
+  useEffect(() => {
+    const sinInternet = () => {
+      setMensaje("❌ Se perdió la conexión a internet.");
+    };
+
+    window.addEventListener("offline", sinInternet);
+
+    return () => {
+      window.removeEventListener("offline", sinInternet);
+    };
+  }, []);
 
   // -----------------------------
   // Cargar solicitudes (READ)
@@ -59,6 +72,15 @@ export default function SolicitarCredito() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    if (!navigator.onLine) {
+      setMensaje(
+        editandoId
+          ? "❌ No hay conexión a internet. No se pudo actualizar."
+          : "❌ No hay conexión a internet. No se pudo guardar."
+      );
+      return;
+    }
+
     if (!nombre || !monto || !plazo) {
       setMensaje("⚠ Todos los campos son obligatorios.");
       return;
@@ -66,7 +88,7 @@ export default function SolicitarCredito() {
 
     const nuevaCuota = calcularCuota(Number(monto), Number(plazo));
 
-    const datosSolicitud = {
+    const datos = {
       nombre,
       monto: Number(monto),
       plazo: Number(plazo),
@@ -78,14 +100,12 @@ export default function SolicitarCredito() {
       setMensaje("");
 
       if (editandoId) {
-        // UPDATE
-        await updateDoc(doc(db, "solicitudes", editandoId), datosSolicitud);
+        await updateDoc(doc(db, "solicitudes", editandoId), datos);
         setMensaje("✏️ Solicitud actualizada correctamente");
         setEditandoId(null);
       } else {
-        // CREATE
         await addDoc(collection(db, "solicitudes"), {
-          ...datosSolicitud,
+          ...datos,
           fecha: new Date(),
         });
         setMensaje("✅ Solicitud guardada correctamente");
@@ -98,15 +118,15 @@ export default function SolicitarCredito() {
 
       cargarSolicitudes();
     } catch (error) {
-      console.error("❌ Error:", error);
-      setMensaje("❌ Error al guardar la solicitud");
+      console.error("❌ Error Firebase:", error);
+      setMensaje("❌ Error de conexión con Firebase");
     } finally {
       setLoading(false);
     }
   };
 
   // -----------------------------
-  // Preparar edición (EDIT)
+  // Preparar edición
   // -----------------------------
   const editarSolicitud = (sol) => {
     setNombre(sol.nombre);
@@ -120,10 +140,7 @@ export default function SolicitarCredito() {
   // Eliminar solicitud (DELETE)
   // -----------------------------
   const eliminarSolicitud = async (id) => {
-    const confirmar = window.confirm(
-      "¿Seguro que deseas eliminar esta solicitud?"
-    );
-    if (!confirmar) return;
+    if (!window.confirm("¿Seguro que deseas eliminar esta solicitud?")) return;
 
     try {
       await deleteDoc(doc(db, "solicitudes", id));
@@ -155,9 +172,8 @@ export default function SolicitarCredito() {
           placeholder="Monto solicitado"
           value={monto}
           onChange={(e) => {
-            const value = e.target.value;
-            setMonto(value);
-            setCuota(calcularCuota(value, plazo));
+            setMonto(e.target.value);
+            setCuota(calcularCuota(e.target.value, plazo));
           }}
         />
 
@@ -166,9 +182,8 @@ export default function SolicitarCredito() {
           placeholder="Plazo en meses"
           value={plazo}
           onChange={(e) => {
-            const value = e.target.value;
-            setPlazo(value);
-            setCuota(calcularCuota(monto, value));
+            setPlazo(e.target.value);
+            setCuota(calcularCuota(monto, e.target.value));
           }}
         />
 
@@ -197,15 +212,14 @@ export default function SolicitarCredito() {
         <ul>
           {solicitudes.map((sol) => (
             <li key={sol.id}>
-              {sol.nombre} — ${sol.monto} a {sol.plazo} meses | Cuota: ${sol.cuota}
-
+              {sol.nombre} — ${sol.monto} a {sol.plazo} meses | Cuota: $
+              {sol.cuota}
               <button
                 onClick={() => editarSolicitud(sol)}
                 style={{ marginLeft: "10px" }}
               >
                 Editar
               </button>
-
               <button
                 onClick={() => eliminarSolicitud(sol.id)}
                 style={{ marginLeft: "5px" }}
