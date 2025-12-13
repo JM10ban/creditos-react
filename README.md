@@ -32,7 +32,7 @@ Manejo de errores (por ejemplo, al desconectar internet)
 
 Navegación entre vistas con React Router
 
-🛠️ Tecnologías Utilizadas
+ Tecnologías Utilizadas
 
 React (Create React App)
 
@@ -70,7 +70,7 @@ public/
 package.json
 README.md
 
-⚙️ Instalación y Ejecución
+ Instalación y Ejecución
 1️⃣ Clonar el repositorio
 git clone https://github.com/JM10ban/creditos-react
 cd creditos-react
@@ -160,6 +160,8 @@ Persistencia de datos en Firebase
 Actualización y eliminación de registros
 
 Verificación directa en Firebase Console
+https://drive.google.com/file/d/14Hm6VBoCnEdFB2QS2j-uWbU86Plkiv94/view?usp=drive_link
+
 
 Manejo de errores y estado de carga
 
